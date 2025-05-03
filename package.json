@@ -1,0 +1,45 @@
+{
+  "name": "@firebase-studio/plugin-sdk",
+  "version": "0.0.0-alpha.1",
+  "type": "module",
+  "description": "A TypeScript SDK for Firebase Studio plugins",
+  "keywords": [
+    "firebase",
+    "firebase-studio",
+    "idx",
+    "project-idx"
+  ],
+  "author": "Google LLC",
+  "license": "Apache-2.0",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./ai": {
+      "import": "./dist/ai/index.js",
+      "require": "./dist/ai/index.cjs",
+      "types": "./dist/ai/index.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "concurrently npm:dev:bundle npm:dev:docs -n bundle,docs -c magenta,yellow",
+    "build": "npm run bundle && npm run docs",
+    "dev:bundle": "npm run bundle -- -w src",
+    "bundle": "tsdown",
+    "dev:docs": "npm run docs -- --watch",
+    "docs": "npx typedoc --options typedoc.json"
+  },
+  "devDependencies": {
+    "@ast-grep/napi": "^0.37.0",
+    "concurrently": "^9.1.2",
+    "rollup-plugin-copy": "^3.5.0",
+    "tsdown": "^0.9.9",
+    "typedoc": "^0.28.3",
+    "typescript": ">=5.2.2"
+  }
+}

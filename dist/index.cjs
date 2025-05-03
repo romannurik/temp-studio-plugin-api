@@ -1,0 +1,1 @@
+"use strict";function e(e){return e}exports.defineMonospacePlugin=e;
