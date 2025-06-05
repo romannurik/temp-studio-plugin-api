@@ -1,0 +1,6 @@
+{
+  "name": "Firebase Studio Plugin - AI Chat Agent",
+  "description": "A template for an AI chat agent as a plugin for Firebase Studio.",
+  "icon": "https://raw.githubusercontent.com/romannurik/temp-studio-plugin-api/refs/heads/workspace-template/.idx/icon.png",
+  "params": []
+}

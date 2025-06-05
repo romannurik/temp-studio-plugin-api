@@ -1,50 +1,41 @@
 {
-  "name": "@firebase-studio/plugin-sdk",
-  "version": "0.0.0-alpha.1",
-  "type": "module",
-  "description": "A TypeScript SDK for Firebase Studio plugins",
-  "keywords": [
-    "firebase",
-    "firebase-studio",
-    "idx",
-    "project-idx"
+  "name": "example-idx-agent-extension",
+  "displayName": "Example IDX Agent Extension",
+  "description": "An example of an IDX agent extension",
+  "version": "0.0.0",
+  "engines": {
+    "vscode": "^1.83.1"
+  },
+  "categories": [
+    "Other"
   ],
-  "author": "Google LLC",
-  "license": "Apache-2.0",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
-    },
-    "./ai": {
-      "import": "./dist/ai/index.js",
-      "require": "./dist/ai/index.cjs",
-      "types": "./dist/ai/index.d.ts"
-    },
-    "./ai/jsx-runtime": {
-      "import": "./dist/ai/jsx-runtime.js",
-      "require": "./dist/ai/jsx-runtime.cjs",
-      "types": "./dist/ai/jsx-runtime.d.ts"
-    }
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "monospacePlugin": {
+    "apiVersion": "1",
+    "features": [
+      "ai"
+    ]
   },
   "scripts": {
-    "dev": "concurrently npm:dev:bundle npm:dev:docs -n bundle,docs -c magenta,yellow",
-    "build": "npm run bundle && npm run docs",
-    "dev:bundle": "npm run bundle -- -w src",
-    "bundle": "tsdown",
-    "dev:docs": "npm run docs -- --watch",
-    "docs": "npx typedoc --options typedoc.json"
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "dev": "npm-run-all -p dev:*",
+    "dev:esbuild": "node esbuild.js --watch",
+    "dev:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "check-types": "tsc --noEmit"
   },
   "devDependencies": {
-    "@ast-grep/napi": "^0.37.0",
-    "concurrently": "^9.1.2",
-    "rollup-plugin-copy": "^3.5.0",
-    "tsdown": "^0.9.9",
-    "typedoc": "^0.28.3",
-    "typescript": ">=5.2.2"
+    "@firebase-studio/plugin-sdk": "github:romannurik/temp-studio-plugin-api",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.83.1",
+    "@vscode/vsce": "^2.26.1",
+    "esbuild": "^0.20.2",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@google-cloud/pubsub": "^4.10.0",
+    "jszip": "^3.10.1"
   }
 }
