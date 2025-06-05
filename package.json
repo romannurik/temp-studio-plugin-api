@@ -24,6 +24,11 @@
       "import": "./dist/ai/index.js",
       "require": "./dist/ai/index.cjs",
       "types": "./dist/ai/index.d.ts"
+    },
+    "./ai/jsx-runtime": {
+      "import": "./dist/ai/jsx-runtime.js",
+      "require": "./dist/ai/jsx-runtime.cjs",
+      "types": "./dist/ai/jsx-runtime.d.ts"
     }
   },
   "scripts": {

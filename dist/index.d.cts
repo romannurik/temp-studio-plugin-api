@@ -1,4 +1,5 @@
-import { Agent, MaybePromise, Tool } from "./include/index-BgO06zA6.js";
+import "./include/jsx-runtime-B22R_Wsu.js";
+import { Agent, MaybePromise, Tool } from "./include/index-DIKWJASw.js";
 
 //#region src/plugin-api.d.ts
 /**
@@ -31,5 +32,6 @@ interface Export {
 /**
  * Helper method for IDX plugins to export the right object shape from its `activate()` function.
  */
-declare function defineMonospacePlugin(plugin: Plugin): Plugin; //#endregion
+declare function defineMonospacePlugin(plugin: Plugin): Plugin;
+//#endregion
 export { Export, PackageJSONAddons, Plugin, SupportedFeature, defineMonospacePlugin };
