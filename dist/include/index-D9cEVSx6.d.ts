@@ -62,6 +62,7 @@ interface ChatThreadMetadata {
   readonly status: 'ready' | 'thinking' | 'complete';
   readonly title: string;
   readonly lastEditTimestamp: number;
+  readonly thinkingText?: string;
   readonly agentInput?: JSONValue;
   readonly completionOutput?: JSONValue;
 }
@@ -90,12 +91,13 @@ interface UserSpeaker {
   readonly displayName: string;
   readonly icon?: string;
 }
+type AgentHandle = `@${string}` | '';
 interface AgentSpeaker {
   readonly type: 'agent';
   readonly displayName: string;
   readonly icon: string;
   readonly agentId: string;
-  readonly handle: string;
+  readonly handle: AgentHandle;
 }
 type ChatSpeaker = UserSpeaker | AgentSpeaker;
 interface DrawingAttachment {
@@ -154,6 +156,7 @@ type ToolMessagePart = {
   readonly input?: JSONValue;
   readonly ui?: Node;
   readonly result?: JSONValue;
+  readonly callId?: string;
 };
 type PromptReasonBase = {
   readonly newUserMessage?: undefined;
@@ -166,7 +169,7 @@ type PromptReason = Readonly<({
   newUserMessage: ChatMessage;
   alsoRejectTool?: ToolMessagePart;
 } & Omit<PromptReasonBase, 'newUserMessage'>) | ({
-  toolCompleted: ToolMessagePart;
+  toolCompleted: ToolMessagePart[];
 } & Omit<PromptReasonBase, 'toolCompleted'>) | ({
   subthreadCompleted: ChatThread;
 } & Omit<PromptReasonBase, 'subthreadCompleted'>) | ({
@@ -186,6 +189,14 @@ interface PromptRequest {
 }
 type PromptResponseStreamMark = number;
 type ErrorInfo = Omit<ErrorMessagePart, 'type'>;
+type ToolCallOptions = {
+  callId?: string;
+};
+type ToolCall = {
+  toolId: string;
+  input?: JSONValue;
+  options?: ToolCallOptions;
+};
 interface PromptResponseStream {
   readonly agentData: StateStore;
   mark(): PromptResponseStreamMark;
@@ -197,14 +208,16 @@ interface PromptResponseStream {
   error(error: string | ErrorInfo): void;
   finishThread(output?: JSONValue): void;
   subthread(agentId: string, agentInput?: JSONValue): void;
-  tool(toolId: string, input?: JSONValue): void;
+  tool(toolId: string, input?: JSONValue, options?: ToolCallOptions): void;
+  tools(tools: ToolCall[]): void;
   suggestNextPrompts(...prompts: string[]): void;
   citation(citation: Citation): void;
   ui(ui: Node | null): void;
 }
 interface AgentMetadata {
   readonly id: string;
-  readonly handle: string;
+  /** Must be of the form '@Foo' or the empty string */
+  readonly handle: AgentHandle;
   readonly displayName: string;
   readonly description: string;
   readonly icon: string;
@@ -226,6 +239,7 @@ interface ToolRunRequest {
   readonly input?: JSONValue;
   readonly response: ToolRunResponse;
   readonly signal?: AbortSignal;
+  readonly autoApply?: AutoApplyConfig;
 }
 interface ToolRunResponse {
   readonly toolData: StateStore;
@@ -251,7 +265,7 @@ type Citation = Readonly<{
   license?: string;
 }>;
 type AgentCommand = Readonly<{
-  command: string;
+  command: `/${string}`;
   description: string;
 } | {
   prompt: string;
@@ -409,8 +423,8 @@ declare const UI: {
 //#endregion
 //#region src/ai/util.d.ts
 interface ParsedPrompt {
-  agentHandle?: string;
-  slashCommand?: string;
+  agentHandle?: `@${string}`;
+  slashCommand?: `/${string}`;
   prompt: string;
   empty: boolean;
 }
@@ -436,4 +450,4 @@ declare function flattenThread(thread: ChatThread): ChatMessage[];
 declare function rootThread(thread: ChatThread): ChatThread;
 
 //#endregion
-export { Agent, AgentCommand, AgentHost, AgentMetadata, AgentSpeaker, Attachment, AutoApplyConfig, ChatMessage, ChatMessageFeedback, ChatMessagePart, ChatSpeaker, ChatThread, ChatThreadMetadata, Citation, DrawingAttachment, ErrorInfo, ErrorMessagePart, ExternalContextEvent, FileAttachment, GetAvailableCommandsRequest, ImageAttachment, MaybePromise, PromptReason, PromptRequest, PromptResponseStream, PromptResponseStreamMark, StateStore, StoredChatThread, SuggestedPrompt, Tool, ToolMessagePart, ToolMetadata, ToolRunRequest, ToolRunResponse, UI, UserSpeaker, flattenThread, messageText, parseUserPrompt, rootThread };
+export { Agent, AgentCommand, AgentHandle, AgentHost, AgentMetadata, AgentSpeaker, Attachment, AutoApplyConfig, ChatMessage, ChatMessageFeedback, ChatMessagePart, ChatSpeaker, ChatThread, ChatThreadMetadata, Citation, DrawingAttachment, ErrorInfo, ErrorMessagePart, ExternalContextEvent, FileAttachment, GetAvailableCommandsRequest, ImageAttachment, MaybePromise, PromptReason, PromptRequest, PromptResponseStream, PromptResponseStreamMark, StateStore, StoredChatThread, SuggestedPrompt, Tool, ToolCall, ToolCallOptions, ToolMessagePart, ToolMetadata, ToolRunRequest, ToolRunResponse, UI, UserSpeaker, flattenThread, messageText, parseUserPrompt, rootThread };
