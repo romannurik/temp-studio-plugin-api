@@ -100,6 +100,11 @@ interface AgentSpeaker {
   readonly handle: AgentHandle;
 }
 type ChatSpeaker = UserSpeaker | AgentSpeaker;
+interface ImageRef {
+  readonly referenceId: string;
+  readonly width?: number;
+  readonly height?: number;
+}
 interface DrawingAttachment {
   readonly type: 'drawing';
   readonly pngBase64: string;
@@ -108,6 +113,7 @@ interface DrawingAttachment {
 interface ImageAttachment {
   readonly type: 'image';
   readonly pngBase64: string;
+  readonly imageRef?: ImageRef;
 }
 interface FileAttachment {
   readonly type: 'file';
@@ -300,7 +306,6 @@ interface AgentHost {
   getTool(id: string): Tool | undefined;
   getAgent(id: string): Agent | undefined;
 }
-
 //#endregion
 //#region src/ai/jsx.d.ts
 /**
@@ -450,4 +455,4 @@ declare function flattenThread(thread: ChatThread): ChatMessage[];
 declare function rootThread(thread: ChatThread): ChatThread;
 
 //#endregion
-export { Agent, AgentCommand, AgentHandle, AgentHost, AgentMetadata, AgentSpeaker, Attachment, AutoApplyConfig, ChatMessage, ChatMessageFeedback, ChatMessagePart, ChatSpeaker, ChatThread, ChatThreadMetadata, Citation, DrawingAttachment, ErrorInfo, ErrorMessagePart, ExternalContextEvent, FileAttachment, GetAvailableCommandsRequest, ImageAttachment, MaybePromise, PromptReason, PromptRequest, PromptResponseStream, PromptResponseStreamMark, StateStore, StoredChatThread, SuggestedPrompt, Tool, ToolCall, ToolCallOptions, ToolMessagePart, ToolMetadata, ToolRunRequest, ToolRunResponse, UI, UserSpeaker, flattenThread, messageText, parseUserPrompt, rootThread };
+export { Agent, AgentCommand, AgentHandle, AgentHost, AgentMetadata, AgentSpeaker, Attachment, AutoApplyConfig, ChatMessage, ChatMessageFeedback, ChatMessagePart, ChatSpeaker, ChatThread, ChatThreadMetadata, Citation, DrawingAttachment, ErrorInfo, ErrorMessagePart, ExternalContextEvent, FileAttachment, GetAvailableCommandsRequest, ImageAttachment, ImageRef, MaybePromise, PromptReason, PromptRequest, PromptResponseStream, PromptResponseStreamMark, StateStore, StoredChatThread, SuggestedPrompt, Tool, ToolCall, ToolCallOptions, ToolMessagePart, ToolMetadata, ToolRunRequest, ToolRunResponse, UI, UserSpeaker, flattenThread, messageText, parseUserPrompt, rootThread };
