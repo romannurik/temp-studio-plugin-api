@@ -1,6 +1,6 @@
 {
   "name": "@firebase-studio/plugin-sdk",
-  "version": "0.0.0-alpha.1",
+  "version": "0.0.0-alpha.2",
   "type": "module",
   "description": "A TypeScript SDK for Firebase Studio plugins",
   "keywords": [
